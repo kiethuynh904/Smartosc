@@ -6,14 +6,16 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Smartosc\Article\Model\ResourceModel\Article\CollectionFactory;
-
+use Smartosc\Article\Helper\Data;
 class Display extends Template
 {
+    protected $helper;
     protected $_pageFactory;
     protected $_articleCollectionFactory;
 
-    public function __construct(Context $context, PageFactory $pageFactory, CollectionFactory $articleCollectionFactory)
+    public function __construct(Context $context, PageFactory $pageFactory, CollectionFactory $articleCollectionFactory,Data $helper)
     {
+        $this->helper = $helper;
 //        $this->_pageFactory = $pageFactory;
         $this->_articleCollectionFactory = $articleCollectionFactory;
         parent::__construct($context);
@@ -21,7 +23,7 @@ class Display extends Template
 
     public function getArticle()
     {
-        $limit = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : 5;
+        $limit = ($this->getRequest()->getParam('limit')) ? $this->getRequest()->getParam('limit') : $this->helper->getGeneralConfig('limit_page');
         $page = ($this->getRequest()->getParam('p')) ? $this->getRequest()->getParam('p') : 1;
 
         $articleCollection = $this->_articleCollectionFactory->create();
@@ -47,7 +49,6 @@ class Display extends Template
             $this->setChild('pager', $pager);
             $this->getArticle()->load();
         }
-
         return $this;
     }
 

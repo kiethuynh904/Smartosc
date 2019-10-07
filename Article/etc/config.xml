@@ -4,6 +4,7 @@
         <article>
             <general>
                 <enable>1</enable>
+                <limit_page>5</limit_page>
             </general>
         </article>
     </default>
